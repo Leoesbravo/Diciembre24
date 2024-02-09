@@ -11,5 +11,7 @@ namespace ML
         public string Nombre { get; set; }
         public byte Creditos { get; set; }
         public string Semestre { get; set; }
+        public int IdMateria { get; set; }
+        public List<object> Materias { get; set; }
     }
 }

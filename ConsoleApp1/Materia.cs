@@ -33,6 +33,19 @@ namespace ConsoleApp1
             }
             Console.ReadKey();
         }
+        public static void GetAll()
+        {
+           ML.Materia materia = BL.Materia.GetAll();
+           foreach(ML.Materia materiaRegistro in materia.Materias)
+            {
+                Console.WriteLine("ID Materia: " + materiaRegistro.IdMateria);
+                Console.WriteLine("Nombre: " + materiaRegistro.Nombre);
+                Console.WriteLine("Creditos: " + materiaRegistro.Creditos);
+                Console.WriteLine("Semestre: " + materiaRegistro.Semestre);
+                Console.WriteLine("-------------------------------------");
+            }
+            Console.ReadKey();
+        }
         //insertar la informacion
        
 

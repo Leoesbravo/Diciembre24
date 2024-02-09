@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -54,5 +55,148 @@ namespace BL
             }
             return resultado;
         }
+        public static bool Delete(int idMateria)
+        {
+            bool resultado = false;
+            try
+            {
+                //SqlConnection- hacer la conexion a la BD
+                using (SqlConnection context = new SqlConnection(DL.Conexion.GetConnectionString()))
+                {
+                    string query = "DELETE FROM Materia WHERE IdMateria = @IdMateria";
+
+                    //SqlCommand- ejecutar sentencias de SQL
+                    SqlCommand commnad = new SqlCommand();
+                    commnad.Connection = context;
+                    commnad.CommandText = query;
+
+                    SqlParameter[] parameters = new SqlParameter[1];
+
+                    parameters[0] = new SqlParameter("@IdMateria", System.Data.SqlDbType.Int);
+                    parameters[0].Value = idMateria;
+
+
+                    commnad.Parameters.AddRange(parameters);
+
+                    commnad.Connection.Open();
+                    int rowsAffected = commnad.ExecuteNonQuery();
+                    if (rowsAffected > 0)
+                    {
+                        resultado = true;
+                    }
+                    else
+                    {
+                        resultado = false;
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                resultado = false;
+            }
+            return resultado;
+        }
+        public static bool Update(ML.Materia materia)
+        {
+            bool resultado = false;
+            try
+            {
+                //SqlConnection- hacer la conexion a la BD
+                using (SqlConnection context = new SqlConnection(DL.Conexion.GetConnectionString()))
+                {
+                    string query = "UPDATE Materia SET Nombre = @Nombre, Creditos = @Creditos, Semestre = @Semestre WHERE IdMateria = @IdMateria";
+
+                    //SqlCommand- ejecutar sentencias de SQL
+                    SqlCommand commnad = new SqlCommand();
+                    commnad.Connection = context;
+                    commnad.CommandText = query;
+
+                    SqlParameter[] parameters = new SqlParameter[4];
+
+                    parameters[0] = new SqlParameter("@Nombre", System.Data.SqlDbType.VarChar);
+                    parameters[0].Value = materia.Nombre;
+                    parameters[1] = new SqlParameter("@Creditos", System.Data.SqlDbType.TinyInt);
+                    parameters[1].Value = materia.Creditos;
+                    parameters[2] = new SqlParameter("@Semestre", System.Data.SqlDbType.VarChar);
+                    parameters[2].Value = materia.Semestre;
+                    parameters[3] = new SqlParameter("@Materia", System.Data.SqlDbType.Int);
+                    parameters[3].Value = materia.IdMateria;
+
+                    commnad.Parameters.AddRange(parameters);
+
+                    commnad.Connection.Open();
+                    int rowsAffected = commnad.ExecuteNonQuery();
+                    if (rowsAffected > 0)
+                    {
+                        resultado = true;
+                    }
+                    else
+                    {
+                        resultado = false;
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                resultado = false;
+            }
+            return resultado;
+        }
+
+        public static ML.Materia GetAll()
+        {
+            ML.Materia materia = new ML.Materia();
+            try
+            {
+                using (SqlConnection context = new SqlConnection(DL.Conexion.GetConnectionString()))
+                {
+                    string query = "SELECT IdMateria, Nombre, Creditos, Semestre FROM Materia";
+
+                    SqlCommand command = new SqlCommand();
+                    command.Connection = context;
+                    command.CommandText = query;
+
+                    DataTable tableMateria = new DataTable();
+
+                    SqlDataAdapter adapter = new SqlDataAdapter(command);
+
+                    adapter.Fill(tableMateria);
+
+                    if (tableMateria.Rows.Count > 0)
+                    {
+                        materia.Materias = new List<object>(); //iniciar mi lista
+                        foreach (DataRow fila in tableMateria.Rows)
+                        {
+                            ML.Materia materiaobj = new ML.Materia();
+                            materiaobj.IdMateria = int.Parse(fila[0].ToString());
+                            materiaobj.Nombre = fila[1].ToString();
+                            materiaobj.Creditos = byte.Parse(fila[2].ToString());
+                            materiaobj.Semestre = fila[3].ToString();
+
+                            materia.Materias.Add(materiaobj);
+                        }
+
+                    }
+                    else
+                    {
+                        //pendiente
+                        //no srivio
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return materia;
+        } 
+        //public static ML.Materia GetById(ML.Materia materia)
+        //{
+
+        //}
+
     }
 }
