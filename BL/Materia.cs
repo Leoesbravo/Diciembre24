@@ -10,6 +10,11 @@ namespace BL
 {
     public class Materia
     {
+        //Add
+        //Delete
+        //Update
+        //GetAll
+        //GetById
         public static bool Add(ML.Materia materia)
         {
             bool resultado = false;
@@ -18,12 +23,14 @@ namespace BL
                 //SqlConnection- hacer la conexion a la BD
                 using (SqlConnection context = new SqlConnection(DL.Conexion.GetConnectionString()))
                 {
-                    string query = "INSERT INTO Materia (Nombre, Creditos, Semestre) VALUES (@Nombre,@Creditos,@Semestre)";
+                   // string query = "INSERT INTO Materia (Nombre, Creditos, Semestre) VALUES (@Nombre,@Creditos,@Semestre)";
+                    string query = "MateriaAdd";
 
                     //SqlCommand- ejecutar sentencias de SQL
                     SqlCommand commnad = new SqlCommand();
                     commnad.Connection = context;
                     commnad.CommandText = query;
+                    commnad.CommandType = CommandType.StoredProcedure;
 
                     SqlParameter[] parameters = new SqlParameter[3];
 
@@ -144,19 +151,20 @@ namespace BL
             }
             return resultado;
         }
-
         public static ML.Materia GetAll()
         {
+        
             ML.Materia materia = new ML.Materia();
             try
             {
                 using (SqlConnection context = new SqlConnection(DL.Conexion.GetConnectionString()))
                 {
-                    string query = "SELECT IdMateria, Nombre, Creditos, Semestre FROM Materia";
+                    string query = "MateriaGetAll";
 
                     SqlCommand command = new SqlCommand();
                     command.Connection = context;
                     command.CommandText = query;
+                    command.CommandType = CommandType.StoredProcedure;
 
                     DataTable tableMateria = new DataTable();
 
@@ -189,14 +197,15 @@ namespace BL
             }
             catch (Exception ex)
             {
-
             }
             return materia;
-        } 
+        }
         //public static ML.Materia GetById(ML.Materia materia)
         //{
 
         //}
+
+        //Stored procedure -SQL
 
     }
 }
