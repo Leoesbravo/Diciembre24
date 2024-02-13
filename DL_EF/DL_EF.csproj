@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{565CE462-D942-409F-94F0-B4A285C1F194}</ProjectGuid>
+    <ProjectGuid>{70F27D3F-A07F-4DCA-AA7B-D248DB075F40}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BL</RootNamespace>
-    <AssemblyName>BL</AssemblyName>
+    <RootNamespace>DL_EF</RootNamespace>
+    <AssemblyName>DL_EF</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -40,9 +40,8 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
-    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
-    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -51,27 +50,62 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
-    <Compile Include="Materia.cs" />
+    <Compile Include="Ejemplo.cs">
+      <DependentUpon>ModelLEscogidoProgramacionNCapas.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Materia.cs">
+      <DependentUpon>ModelLEscogidoProgramacionNCapas.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MateriaGetAll_Result.cs">
+      <DependentUpon>ModelLEscogidoProgramacionNCapas.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MateriaGetById_Result.cs">
+      <DependentUpon>ModelLEscogidoProgramacionNCapas.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelLEscogidoProgramacionNCapas.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelLEscogidoProgramacionNCapas.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelLEscogidoProgramacionNCapas.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelLEscogidoProgramacionNCapas.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ModelLEscogidoProgramacionNCapas.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelLEscogidoProgramacionNCapas.edmx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DL\DL.csproj">
-      <Project>{62e8b895-ea54-4be1-af4a-8deab2b1a642}</Project>
-      <Name>DL</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DL_EF\DL_EF.csproj">
-      <Project>{70f27d3f-a07f-4dca-aa7b-d248db075f40}</Project>
-      <Name>DL_EF</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ML\ML.csproj">
-      <Project>{4e9793bf-7a51-40d5-af78-5e75beabc02d}</Project>
-      <Name>ML</Name>
-    </ProjectReference>
+    <EntityDeploy Include="ModelLEscogidoProgramacionNCapas.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>ModelLEscogidoProgramacionNCapas.Designer.cs</LastGenOutput>
+    </EntityDeploy>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.Config" />
+    <None Include="ModelLEscogidoProgramacionNCapas.edmx.diagram">
+      <DependentUpon>ModelLEscogidoProgramacionNCapas.edmx</DependentUpon>
+    </None>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ModelLEscogidoProgramacionNCapas.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ModelLEscogidoProgramacionNCapas.Context.cs</LastGenOutput>
+      <DependentUpon>ModelLEscogidoProgramacionNCapas.edmx</DependentUpon>
+    </Content>
+    <Content Include="ModelLEscogidoProgramacionNCapas.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ModelLEscogidoProgramacionNCapas.edmx</DependentUpon>
+      <LastGenOutput>ModelLEscogidoProgramacionNCapas.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

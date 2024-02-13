@@ -62,6 +62,31 @@ namespace BL
             }
             return resultado;
         }
+        public static bool AddEF(ML.Materia materia)
+        {
+            bool resultado = false;
+            try
+            {
+                using (DL_EF.LEscogidoProgramacionNCapasFebreroEntities context = new DL_EF.LEscogidoProgramacionNCapasFebreroEntities())
+                {
+                    int rowsAffected = context.MateriaAdd(materia.Nombre,materia.Creditos, materia.Semestre);
+                    if(rowsAffected >0)
+                    {
+                        resultado = true;
+                    }
+                    else
+                    {
+                        resultado = false;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return resultado;
+        }
+
         public static bool Delete(int idMateria)
         {
             bool resultado = false;
@@ -150,6 +175,41 @@ namespace BL
                 resultado = false;
             }
             return resultado;
+        }
+        public static ML.Materia GetAllEF()
+        {
+            ML.Materia materia = new ML.Materia();
+            try
+            {
+                using (DL_EF.LEscogidoProgramacionNCapasFebreroEntities context = new DL_EF.LEscogidoProgramacionNCapasFebreroEntities())
+                {
+                    var registros = context.MateriaGetAll().ToList();
+
+                    if(registros.Count > 0)
+                    {
+                        materia.Materias = new List<object>();
+                        foreach( var registro in registros)
+                        {
+                            ML.Materia materiaObj = new ML.Materia();
+                            materiaObj.IdMateria = registro.IdMateria;
+                            materiaObj.IdMateria = registro.IdMateria;
+                            materiaObj.IdMateria = registro.IdMateria;
+                            materiaObj.IdMateria = registro.IdMateria;
+
+                            materia.Materias.Add(materiaObj);
+                        }
+                    }
+                    else
+                    {
+                        //manejo de exepcion
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return materia;
         }
         public static ML.Materia GetAll()
         {
