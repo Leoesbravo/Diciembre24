@@ -35,16 +35,26 @@ namespace ConsoleApp1
         }
         public static void GetAll()
         {
-           ML.Materia materia = BL.Materia.GetAll();
-           foreach(ML.Materia materiaRegistro in materia.Materias)
+           var resultado = BL.Materia.GetAllEF();
+           if(resultado.Item1 == true)
             {
-                Console.WriteLine("ID Materia: " + materiaRegistro.IdMateria);
-                Console.WriteLine("Nombre: " + materiaRegistro.Nombre);
-                Console.WriteLine("Creditos: " + materiaRegistro.Creditos);
-                Console.WriteLine("Semestre: " + materiaRegistro.Semestre);
-                Console.WriteLine("-------------------------------------");
+                foreach (ML.Materia materiaRegistro in resultado.Item3.Materias)
+                {
+                    Console.WriteLine("ID Materia: " + materiaRegistro.IdMateria);
+                    Console.WriteLine("Nombre: " + materiaRegistro.Nombre);
+                    Console.WriteLine("Creditos: " + materiaRegistro.Creditos);
+                    Console.WriteLine("Semestre: " + materiaRegistro.Semestre);
+                    Console.WriteLine("-------------------------------------");
+                }
+                Console.ReadKey();
             }
-            Console.ReadKey();
+            else
+            {
+                Console.WriteLine("Ocurrio un error al consultar la información" + resultado.Item2);
+                Console.ReadKey();
+            }
+
+          
         }
         //insertar la informacion
        

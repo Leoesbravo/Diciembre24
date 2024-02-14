@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -23,7 +24,7 @@ namespace BL
                 //SqlConnection- hacer la conexion a la BD
                 using (SqlConnection context = new SqlConnection(DL.Conexion.GetConnectionString()))
                 {
-                   // string query = "INSERT INTO Materia (Nombre, Creditos, Semestre) VALUES (@Nombre,@Creditos,@Semestre)";
+                    // string query = "INSERT INTO Materia (Nombre, Creditos, Semestre) VALUES (@Nombre,@Creditos,@Semestre)";
                     string query = "MateriaAdd";
 
                     //SqlCommand- ejecutar sentencias de SQL
@@ -69,8 +70,8 @@ namespace BL
             {
                 using (DL_EF.LEscogidoProgramacionNCapasFebreroEntities context = new DL_EF.LEscogidoProgramacionNCapasFebreroEntities())
                 {
-                    int rowsAffected = context.MateriaAdd(materia.Nombre,materia.Creditos, materia.Semestre);
-                    if(rowsAffected >0)
+                    int rowsAffected = context.MateriaAdd(materia.Nombre, materia.Creditos, materia.Semestre);
+                    if (rowsAffected > 0)
                     {
                         resultado = true;
                     }
@@ -86,7 +87,6 @@ namespace BL
             }
             return resultado;
         }
-
         public static bool Delete(int idMateria)
         {
             bool resultado = false;
@@ -129,6 +129,7 @@ namespace BL
             }
             return resultado;
         }
+        //Error en tiempo de compilacion
         public static bool Update(ML.Materia materia)
         {
             bool resultado = false;
@@ -176,7 +177,15 @@ namespace BL
             }
             return resultado;
         }
-        public static ML.Materia GetAllEF()
+        //Exception -> error en tiempo de ejecucion
+        //genera un error que termina el flujo del proceso
+        //Tupla -> estructura de datos (arreglos, listas,tupla)
+
+        //bool -> saber si fue correcto o no
+        //string -> va a mostrar el mensaje de la exepcion
+        //modelo -> contiene los datos 
+        //Exepcion -> exepcion completa
+        public static (bool, string, ML.Materia, Exception) GetAllEF()
         {
             ML.Materia materia = new ML.Materia();
             try
@@ -185,35 +194,77 @@ namespace BL
                 {
                     var registros = context.MateriaGetAll().ToList();
 
-                    if(registros.Count > 0)
+                    if (registros.Count > 0)
                     {
                         materia.Materias = new List<object>();
-                        foreach( var registro in registros)
+                        foreach (var registro in registros)
                         {
                             ML.Materia materiaObj = new ML.Materia();
                             materiaObj.IdMateria = registro.IdMateria;
-                            materiaObj.IdMateria = registro.IdMateria;
-                            materiaObj.IdMateria = registro.IdMateria;
-                            materiaObj.IdMateria = registro.IdMateria;
+                            materiaObj.Nombre = registro.Nombre;
+                            materiaObj.Creditos = registro.Creditos.Value;
+                            materiaObj.Semestre = registro.Semestre;
 
                             materia.Materias.Add(materiaObj);
                         }
+                        return (true, null, materia, null);
                     }
                     else
                     {
-                        //manejo de exepcion
+                        return (false, null, materia, null);
                     }
                 }
             }
             catch (Exception ex)
             {
-
+                return (false, ex.Message, materia, ex);
             }
-            return materia;
+        }
+        public static (bool, string, ML.Materia, Exception) GetAllLINQ()
+        {
+            ML.Materia materia = new ML.Materia();
+            try
+            {
+                using (DL_EF.LEscogidoProgramacionNCapasFebreroEntities context = new DL_EF.LEscogidoProgramacionNCapasFebreroEntities())
+                {
+                    var query = (from Materia in context.Materias
+                                 select new
+                                 {
+                                     IdMateria = Materia.IdMateria,
+                                     Nombre = Materia.Nombre,
+                                     Creditos = Materia.Creditos,
+                                     Semestre = Materia.Semestre
+                                 }).ToList();
+
+                    if (query.Count > 0 )
+                    {
+                        materia.Materias = new List<object>();
+                        foreach (var registro in query)
+                        {
+                            ML.Materia materiaObj = new ML.Materia();
+                            materiaObj.IdMateria = registro.IdMateria;
+                            materiaObj.Nombre = registro.Nombre;
+                            materiaObj.Creditos = registro.Creditos.Value;
+                            materiaObj.Semestre = registro.Semestre;
+
+                            materia.Materias.Add(materiaObj);
+                        }
+                        return (true, null, materia, null);
+                    }
+                    else
+                    {
+                        return (false, null, materia, null);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return (false, ex.Message, materia, ex);
+            }
         }
         public static ML.Materia GetAll()
         {
-        
+
             ML.Materia materia = new ML.Materia();
             try
             {
@@ -260,12 +311,12 @@ namespace BL
             }
             return materia;
         }
-        //public static ML.Materia GetById(ML.Materia materia)
-        //{
 
-        //}
-
-        //Stored procedure -SQL
 
     }
 }
+
+//15 metodos en BL
+//5 con SQL Client
+//5 con Entity
+//5 con LINQ
