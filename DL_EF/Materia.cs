@@ -17,8 +17,9 @@ namespace DL_EF
         public int IdMateria { get; set; }
         public string Nombre { get; set; }
         public Nullable<byte> Creditos { get; set; }
-        public string Semestre { get; set; }
-        public string Sexo { get; set; }
         public string Costo { get; set; }
+        public Nullable<int> IdSemestre { get; set; }
+    
+        public virtual Semestre Semestre { get; set; }
     }
 }

@@ -27,8 +27,8 @@ namespace DL_EF
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Ejemplo> Ejemploes { get; set; }
         public virtual DbSet<Materia> Materias { get; set; }
+        public virtual DbSet<Semestre> Semestres { get; set; }
     
         public virtual ObjectResult<MateriaGetById_Result> MateriaGetById(Nullable<int> idMateria)
         {
@@ -39,7 +39,7 @@ namespace DL_EF
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<MateriaGetById_Result>("MateriaGetById", idMateriaParameter);
         }
     
-        public virtual int MateriaAdd(string nombre, Nullable<byte> creditos, string semestre)
+        public virtual int MateriaAdd(string nombre, Nullable<byte> creditos, string costo, Nullable<int> idSemestre)
         {
             var nombreParameter = nombre != null ?
                 new ObjectParameter("Nombre", nombre) :
@@ -49,11 +49,15 @@ namespace DL_EF
                 new ObjectParameter("Creditos", creditos) :
                 new ObjectParameter("Creditos", typeof(byte));
     
-            var semestreParameter = semestre != null ?
-                new ObjectParameter("Semestre", semestre) :
-                new ObjectParameter("Semestre", typeof(string));
+            var costoParameter = costo != null ?
+                new ObjectParameter("Costo", costo) :
+                new ObjectParameter("Costo", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("MateriaAdd", nombreParameter, creditosParameter, semestreParameter);
+            var idSemestreParameter = idSemestre.HasValue ?
+                new ObjectParameter("IdSemestre", idSemestre) :
+                new ObjectParameter("IdSemestre", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("MateriaAdd", nombreParameter, creditosParameter, costoParameter, idSemestreParameter);
         }
     
         public virtual ObjectResult<MateriaGetAll_Result> MateriaGetAll()

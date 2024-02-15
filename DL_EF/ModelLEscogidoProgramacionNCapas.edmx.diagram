@@ -5,8 +5,9 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="cc30595530614cf48e9f6740a14ff9c8" Name="Diagram1">
-        <EntityTypeShape EntityType="LEscogidoProgramacionNCapasFebreroModel.Ejemplo" Width="1.5" PointX="3" PointY="0.75" />
-        <EntityTypeShape EntityType="LEscogidoProgramacionNCapasFebreroModel.Materia" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="LEscogidoProgramacionNCapasFebreroModel.Materia" Width="1.5" PointX="3" PointY="0.875" />
+        <EntityTypeShape EntityType="LEscogidoProgramacionNCapasFebreroModel.Semestre" Width="1.5" PointX="0.75" PointY="1.25" />
+        <AssociationConnector Association="LEscogidoProgramacionNCapasFebreroModel.FK__Materia__IdSemes__5441852A" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

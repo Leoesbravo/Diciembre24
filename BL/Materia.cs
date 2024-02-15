@@ -5,6 +5,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace BL
@@ -70,7 +71,7 @@ namespace BL
             {
                 using (DL_EF.LEscogidoProgramacionNCapasFebreroEntities context = new DL_EF.LEscogidoProgramacionNCapasFebreroEntities())
                 {
-                    int rowsAffected = context.MateriaAdd(materia.Nombre, materia.Creditos, materia.Semestre);
+                    int rowsAffected = context.MateriaAdd(materia.Nombre, materia.Creditos, materia.Costo, materia.Semestre.IdSemestre);
                     if (rowsAffected > 0)
                     {
                         resultado = true;
@@ -203,7 +204,8 @@ namespace BL
                             materiaObj.IdMateria = registro.IdMateria;
                             materiaObj.Nombre = registro.Nombre;
                             materiaObj.Creditos = registro.Creditos.Value;
-                            materiaObj.Semestre = registro.Semestre;
+                            materiaObj.Semestre = new ML.Semestre();
+                            materiaObj.Semestre.IdSemestre = registro.IdSemestre.Value;
 
                             materia.Materias.Add(materiaObj);
                         }
@@ -232,11 +234,10 @@ namespace BL
                                  {
                                      IdMateria = Materia.IdMateria,
                                      Nombre = Materia.Nombre,
-                                     Creditos = Materia.Creditos,
-                                     Semestre = Materia.Semestre
+                                     Creditos = Materia.Creditos
                                  }).ToList();
 
-                    if (query.Count > 0 )
+                    if (query.Count > 0)
                     {
                         materia.Materias = new List<object>();
                         foreach (var registro in query)
@@ -245,7 +246,6 @@ namespace BL
                             materiaObj.IdMateria = registro.IdMateria;
                             materiaObj.Nombre = registro.Nombre;
                             materiaObj.Creditos = registro.Creditos.Value;
-                            materiaObj.Semestre = registro.Semestre;
 
                             materia.Materias.Add(materiaObj);
                         }
@@ -262,61 +262,93 @@ namespace BL
                 return (false, ex.Message, materia, ex);
             }
         }
-        public static ML.Materia GetAll()
+        public static (bool, string, Exception) AddLINQ(ML.Materia materia)
         {
-
-            ML.Materia materia = new ML.Materia();
             try
             {
-                using (SqlConnection context = new SqlConnection(DL.Conexion.GetConnectionString()))
+                using (DL_EF.LEscogidoProgramacionNCapasFebreroEntities context = new DL_EF.LEscogidoProgramacionNCapasFebreroEntities())
                 {
-                    string query = "MateriaGetAll";
+                   //instancia de un objeto, creando un objeto
+                    DL_EF.Materia materiaDL = new DL_EF.Materia();
 
-                    SqlCommand command = new SqlCommand();
-                    command.Connection = context;
-                    command.CommandText = query;
-                    command.CommandType = CommandType.StoredProcedure;
+                    materiaDL.Nombre = materia.Nombre;
+                    materiaDL.Creditos = materia.Creditos;
 
-                    DataTable tableMateria = new DataTable();
-
-                    SqlDataAdapter adapter = new SqlDataAdapter(command);
-
-                    adapter.Fill(tableMateria);
-
-                    if (tableMateria.Rows.Count > 0)
+                    context.Materias.Add(materiaDL);
+                    int rowsAffected = context.SaveChanges();
+                    if(rowsAffected > 0)
                     {
-                        materia.Materias = new List<object>(); //iniciar mi lista
-                        foreach (DataRow fila in tableMateria.Rows)
-                        {
-                            ML.Materia materiaobj = new ML.Materia();
-                            materiaobj.IdMateria = int.Parse(fila[0].ToString());
-                            materiaobj.Nombre = fila[1].ToString();
-                            materiaobj.Creditos = byte.Parse(fila[2].ToString());
-                            materiaobj.Semestre = fila[3].ToString();
-
-                            materia.Materias.Add(materiaobj);
-                        }
-
+                        return (true, null, null);
                     }
                     else
                     {
-                        //pendiente
-                        //no srivio
+                        return (false, null, null);
                     }
-
                 }
             }
             catch (Exception ex)
             {
+                return (false, ex.Message, ex);
             }
-            return materia;
         }
+        //public static ML.Materia GetAll()
+        //{
+
+        //    ML.Materia materia = new ML.Materia();
+        //    try
+        //    {
+        //        using (SqlConnection context = new SqlConnection(DL.Conexion.GetConnectionString()))
+        //        {
+        //            string query = "MateriaGetAll";
+
+        //            SqlCommand command = new SqlCommand();
+        //            command.Connection = context;
+        //            command.CommandText = query;
+        //            command.CommandType = CommandType.StoredProcedure;
+
+        //            DataTable tableMateria = new DataTable();
+
+        //            SqlDataAdapter adapter = new SqlDataAdapter(command);
+
+        //            adapter.Fill(tableMateria);
+
+        //            if (tableMateria.Rows.Count > 0)
+        //            {
+        //                materia.Materias = new List<object>(); //iniciar mi lista
+        //                foreach (DataRow fila in tableMateria.Rows)
+        //                {
+        //                    ML.Materia materiaobj = new ML.Materia();
+        //                    materiaobj.IdMateria = int.Parse(fila[0].ToString());
+        //                    materiaobj.Nombre = fila[1].ToString();
+        //                    materiaobj.Creditos = byte.Parse(fila[2].ToString());
+        //                    materiaobj.Semestre = fila[3].ToString();
+
+        //                    materia.Materias.Add(materiaobj);
+        //                }
+
+        //            }
+        //            else
+        //            {
+        //                //pendiente
+        //                //no srivio
+        //            }
+
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //    }
+        //    return materia;
+        //}
 
 
     }
 }
 
 //15 metodos en BL
-//5 con SQL Client
+//5 con SQL Client SP
 //5 con Entity
 //5 con LINQ
+
+//metodos con llave foranea
+//5 Entity

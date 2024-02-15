@@ -5,13 +5,6 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="LEscogidoProgramacionNCapasFebreroModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="Ejemplo">
-          <Key>
-            <PropertyRef Name="IdEjemplo" />
-          </Key>
-          <Property Name="IdEjemplo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Nombre" Type="varchar" MaxLength="1" />
-        </EntityType>
         <EntityType Name="Materia">
           <Key>
             <PropertyRef Name="IdMateria" />
@@ -19,22 +12,45 @@
           <Property Name="IdMateria" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Nombre" Type="varchar" MaxLength="50" />
           <Property Name="Creditos" Type="tinyint" />
-          <Property Name="Semestre" Type="varchar" MaxLength="50" />
-          <Property Name="Sexo" Type="varchar" MaxLength="1" />
           <Property Name="Costo" Type="varchar" MaxLength="1" />
+          <Property Name="IdSemestre" Type="int" />
         </EntityType>
+        <EntityType Name="Semestre">
+          <Key>
+            <PropertyRef Name="IdSemestre" />
+          </Key>
+          <Property Name="IdSemestre" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="20" />
+        </EntityType>
+        <Association Name="FK__Materia__IdSemes__5441852A">
+          <End Role="Semestre" Type="Self.Semestre" Multiplicity="0..1" />
+          <End Role="Materia" Type="Self.Materia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Semestre">
+              <PropertyRef Name="IdSemestre" />
+            </Principal>
+            <Dependent Role="Materia">
+              <PropertyRef Name="IdSemestre" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Function Name="MateriaAdd" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Nombre" Type="varchar" Mode="In" />
           <Parameter Name="Creditos" Type="tinyint" Mode="In" />
-          <Parameter Name="Semestre" Type="varchar" Mode="In" />
+          <Parameter Name="Costo" Type="varchar" Mode="In" />
+          <Parameter Name="IdSemestre" Type="int" Mode="In" />
         </Function>
         <Function Name="MateriaGetAll" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="MateriaGetById" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="IdMateria" Type="int" Mode="In" />
         </Function>
         <EntityContainer Name="LEscogidoProgramacionNCapasFebreroModelStoreContainer">
-          <EntitySet Name="Ejemplo" EntityType="Self.Ejemplo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Materia" EntityType="Self.Materia" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Semestre" EntityType="Self.Semestre" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Materia__IdSemes__5441852A" Association="Self.FK__Materia__IdSemes__5441852A">
+            <End Role="Semestre" EntitySet="Semestre" />
+            <End Role="Materia" EntitySet="Materia" />
+          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -44,12 +60,17 @@
           <FunctionImport Name="MateriaGetById" ReturnType="Collection(LEscogidoProgramacionNCapasFebreroModel.MateriaGetById_Result)">
           <Parameter Name="IdMateria" Mode="In" Type="Int32" />
           </FunctionImport>
-          <EntitySet Name="Ejemploes" EntityType="LEscogidoProgramacionNCapasFebreroModel.Ejemplo" />
           <EntitySet Name="Materias" EntityType="LEscogidoProgramacionNCapasFebreroModel.Materia" />
+          <EntitySet Name="Semestres" EntityType="LEscogidoProgramacionNCapasFebreroModel.Semestre" />
+          <AssociationSet Name="FK__Materia__IdSemes__5441852A" Association="LEscogidoProgramacionNCapasFebreroModel.FK__Materia__IdSemes__5441852A">
+            <End Role="Semestre" EntitySet="Semestres" />
+            <End Role="Materia" EntitySet="Materias" />
+          </AssociationSet>
           <FunctionImport Name="MateriaAdd">
             <Parameter Name="Nombre" Mode="In" Type="String" />
             <Parameter Name="Creditos" Mode="In" Type="Byte" />
-            <Parameter Name="Semestre" Mode="In" Type="String" />
+            <Parameter Name="Costo" Mode="In" Type="String" />
+            <Parameter Name="IdSemestre" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="MateriaGetAll" ReturnType="Collection(LEscogidoProgramacionNCapasFebreroModel.MateriaGetAll_Result)" />
         </EntityContainer>
@@ -59,13 +80,6 @@
           <Property Type="Byte" Name="Creditos" Nullable="true" />
           <Property Type="String" Name="Semestre" Nullable="true" MaxLength="50" />
         </ComplexType>
-        <EntityType Name="Ejemplo">
-          <Key>
-            <PropertyRef Name="IdEjemplo" />
-          </Key>
-          <Property Name="IdEjemplo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Nombre" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
-        </EntityType>
         <EntityType Name="Materia">
           <Key>
             <PropertyRef Name="IdMateria" />
@@ -73,16 +87,36 @@
           <Property Name="IdMateria" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Creditos" Type="Byte" />
-          <Property Name="Semestre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Sexo" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
           <Property Name="Costo" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="IdSemestre" Type="Int32" />
+          <NavigationProperty Name="Semestre" Relationship="LEscogidoProgramacionNCapasFebreroModel.FK__Materia__IdSemes__5441852A" FromRole="Materia" ToRole="Semestre" />
         </EntityType>
+        <EntityType Name="Semestre">
+          <Key>
+            <PropertyRef Name="IdSemestre" />
+          </Key>
+          <Property Name="IdSemestre" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Materias" Relationship="LEscogidoProgramacionNCapasFebreroModel.FK__Materia__IdSemes__5441852A" FromRole="Semestre" ToRole="Materia" />
+        </EntityType>
+        <Association Name="FK__Materia__IdSemes__5441852A">
+          <End Type="LEscogidoProgramacionNCapasFebreroModel.Semestre" Role="Semestre" Multiplicity="0..1" />
+          <End Type="LEscogidoProgramacionNCapasFebreroModel.Materia" Role="Materia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Semestre">
+              <PropertyRef Name="IdSemestre" />
+            </Principal>
+            <Dependent Role="Materia">
+              <PropertyRef Name="IdSemestre" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <ComplexType Name="MateriaGetAll_Result">
           <Property Type="Int32" Name="IdMateria" Nullable="false" />
           <Property Type="String" Name="Nombre" Nullable="true" MaxLength="50" />
           <Property Type="Byte" Name="Creditos" Nullable="true" />
-          <Property Type="String" Name="Semestre" Nullable="true" MaxLength="50" />
           <Property Type="String" Name="Costo" Nullable="true" MaxLength="1" />
+          <Property Type="Int32" Name="IdSemestre" Nullable="true" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -100,23 +134,22 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <EntitySetMapping Name="Ejemploes">
-            <EntityTypeMapping TypeName="LEscogidoProgramacionNCapasFebreroModel.Ejemplo">
-              <MappingFragment StoreEntitySet="Ejemplo">
-                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
-                <ScalarProperty Name="IdEjemplo" ColumnName="IdEjemplo" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Materias">
             <EntityTypeMapping TypeName="LEscogidoProgramacionNCapasFebreroModel.Materia">
               <MappingFragment StoreEntitySet="Materia">
+                <ScalarProperty Name="IdSemestre" ColumnName="IdSemestre" />
                 <ScalarProperty Name="Costo" ColumnName="Costo" />
-                <ScalarProperty Name="Sexo" ColumnName="Sexo" />
-                <ScalarProperty Name="Semestre" ColumnName="Semestre" />
                 <ScalarProperty Name="Creditos" ColumnName="Creditos" />
                 <ScalarProperty Name="Nombre" ColumnName="Nombre" />
                 <ScalarProperty Name="IdMateria" ColumnName="IdMateria" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Semestres">
+            <EntityTypeMapping TypeName="LEscogidoProgramacionNCapasFebreroModel.Semestre">
+              <MappingFragment StoreEntitySet="Semestre">
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="IdSemestre" ColumnName="IdSemestre" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -127,8 +160,8 @@
                 <ScalarProperty Name="IdMateria" ColumnName="IdMateria" />
                 <ScalarProperty Name="Nombre" ColumnName="Nombre" />
                 <ScalarProperty Name="Creditos" ColumnName="Creditos" />
-                <ScalarProperty Name="Semestre" ColumnName="Semestre" />
                 <ScalarProperty Name="Costo" ColumnName="Costo" />
+                <ScalarProperty Name="IdSemestre" ColumnName="IdSemestre" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

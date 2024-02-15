@@ -20,9 +20,11 @@ namespace ConsoleApp1
             materia.Creditos = byte.Parse(Console.ReadLine());
 
             Console.WriteLine("Ingresa el semestre al que pertenece la materia");
-            materia.Semestre = Console.ReadLine();
+            //Propiedad de navegacion
+            materia.Semestre = new ML.Semestre();
+            materia.Semestre.IdSemestre = int.Parse(Console.ReadLine());
 
-            bool resultado = BL.Materia.Add(materia);
+            bool resultado = BL.Materia.AddEF(materia);
             if (resultado == true)
             {
                 Console.WriteLine("Se ha insertado el registro");
@@ -43,7 +45,7 @@ namespace ConsoleApp1
                     Console.WriteLine("ID Materia: " + materiaRegistro.IdMateria);
                     Console.WriteLine("Nombre: " + materiaRegistro.Nombre);
                     Console.WriteLine("Creditos: " + materiaRegistro.Creditos);
-                    Console.WriteLine("Semestre: " + materiaRegistro.Semestre);
+                    Console.WriteLine("Semestre: " + materiaRegistro.Semestre.IdSemestre);
                     Console.WriteLine("-------------------------------------");
                 }
                 Console.ReadKey();
@@ -62,11 +64,7 @@ namespace ConsoleApp1
     }
 }
 
-//Insertar -Add
-//actualizar -Update
-//Eliminar -Delete
-//Consultar toda la informacion con SQL Client -GetAll
-//Consultar filtrado por id con SQL Client - GetById
-
-//Update 
-//Delete
+//terminar los metodos de LINQ
+//Agregar nueva tabla ROl
+//actualizar modelo de EF
+//Actualizar del codigo(ML,PLy BL)

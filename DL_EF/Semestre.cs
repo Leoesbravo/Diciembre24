@@ -12,9 +12,18 @@ namespace DL_EF
     using System;
     using System.Collections.Generic;
     
-    public partial class Ejemplo
+    public partial class Semestre
     {
-        public int IdEjemplo { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Semestre()
+        {
+            this.Materias = new HashSet<Materia>();
+        }
+    
+        public int IdSemestre { get; set; }
         public string Nombre { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Materia> Materias { get; set; }
     }
 }
