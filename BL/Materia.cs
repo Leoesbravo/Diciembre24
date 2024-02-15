@@ -203,8 +203,9 @@ namespace BL
                             ML.Materia materiaObj = new ML.Materia();
                             materiaObj.IdMateria = registro.IdMateria;
                             materiaObj.Nombre = registro.Nombre;
-                            materiaObj.Creditos = registro.Creditos.Value;
+                            materiaObj.Creditos = registro.Creditos.Value;                           
                             materiaObj.Semestre = new ML.Semestre();
+                            materiaObj.Semestre.Nombre = registro.NombreSemestre;
                             materiaObj.Semestre.IdSemestre = registro.IdSemestre.Value;
 
                             materia.Materias.Add(materiaObj);

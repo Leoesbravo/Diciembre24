@@ -18,5 +18,6 @@ namespace DL_EF
         public Nullable<byte> Creditos { get; set; }
         public string Costo { get; set; }
         public Nullable<int> IdSemestre { get; set; }
+        public string NombreSemestre { get; set; }
     }
 }

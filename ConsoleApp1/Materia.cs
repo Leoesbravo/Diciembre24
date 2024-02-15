@@ -45,7 +45,8 @@ namespace ConsoleApp1
                     Console.WriteLine("ID Materia: " + materiaRegistro.IdMateria);
                     Console.WriteLine("Nombre: " + materiaRegistro.Nombre);
                     Console.WriteLine("Creditos: " + materiaRegistro.Creditos);
-                    Console.WriteLine("Semestre: " + materiaRegistro.Semestre.IdSemestre);
+                    Console.WriteLine("IdSemestre: " + materiaRegistro.Semestre.IdSemestre);
+                    Console.WriteLine("Nombre: " + materiaRegistro.Semestre.Nombre);
                     Console.WriteLine("-------------------------------------");
                 }
                 Console.ReadKey();
@@ -59,8 +60,7 @@ namespace ConsoleApp1
           
         }
         //insertar la informacion
-       
-
+      
     }
 }
 
