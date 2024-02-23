@@ -1,0 +1,46 @@
+﻿@model ML.Materia
+@{
+    ViewBag.Title = "GetAll";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>GetAll</h2>
+<a class="btn btn-success" href="@Url.Action("Form","Materia")">Agregar</a>
+@if (Model.Materias.Count > 0 || Model.Materias != null )
+{
+    <table class="table table-dark table-hover table-bordered">
+        <thead class="table-secondary">
+            <tr class="text-center">
+                <th>Editar</th>
+                <th>IdMateria</th>
+                <th>Nombre</th>
+                <th>Creditos</th>
+                <th>Costo</th>
+                <th>IdSemestre</th>
+                <th>Semestre</th>
+                <th>Eliminar</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (ML.Materia materia in Model.Materias)
+            {
+                <tr class="text-center">    
+                    <td><a class="btn btn-warning" href="@Url.Action("Form", "Materia", new {idMateria = materia.IdMateria})">Editar</a></td>
+                    <td>@materia.IdMateria</td>
+                    <td>@materia.Nombre</td>
+                    <td>@materia.Creditos</td>
+                    <td>@materia.Costo</td>
+                    <td>@materia.Semestre.IdSemestre</td>
+                    <td>@materia.Semestre.Nombre</td>
+                    <td><button class="btn btn-danger">Eliminar</button></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+<h1>No existen registros </h1>
+}
+
+

@@ -223,6 +223,42 @@ namespace BL
                 return (false, ex.Message, materia, ex);
             }
         }
+
+        public static (bool, string, ML.Materia, Exception) GetById(int idMateria)
+        {
+            ML.Materia materia = new ML.Materia();
+            try
+            {
+                using (DL_EF.LEscogidoProgramacionNCapasFebreroEntities context = new DL_EF.LEscogidoProgramacionNCapasFebreroEntities())
+                {
+                    var registros = context.MateriaGetById(idMateria).SingleOrDefault();
+
+                    if (registros!=null)
+                    {
+                            ML.Materia materiaObj = new ML.Materia();
+                            materiaObj.IdMateria = registros.IdMateria;
+                            materiaObj.Nombre = registros.Nombre;
+                            materiaObj.Creditos = registros.Creditos.Value;
+                        materiaObj.Semestre = new ML.Semestre();
+
+                        
+                        //return (true, null, materia, null);
+                        return (true, null, materiaObj, null);
+                    }
+                    else
+                    {
+                        materia.Semestre = new ML.Semestre();
+                        return (false, null, materia, null);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                materia.Semestre = new ML.Semestre();
+
+                return (false, ex.Message, materia, ex);
+            }
+        }
         public static (bool, string, ML.Materia, Exception) GetAllLINQ()
         {
             ML.Materia materia = new ML.Materia();
