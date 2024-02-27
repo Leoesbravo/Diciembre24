@@ -1,0 +1,48 @@
+﻿@model ML.Alumno
+@{
+    ViewBag.Title = "Form";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 class="text-center">Formulario de Alumnos</h2>
+<hr />
+@using (Html.BeginForm("Form", "Alumno", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.HiddenFor(model => model.IdAlumno)
+<div class="row">
+    <div class="col-4">
+        @Html.LabelFor(model => model.Nombre)
+        @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control" })
+    </div>
+    <div class="col-4">
+        @Html.LabelFor(model => model.ApellidoPaterno)
+        @Html.TextBoxFor(model => model.ApellidoPaterno, new { @class = "form-control" })
+    </div>
+</div>
+<div class="row">
+    <div class="col-4">
+        @Html.LabelFor(model => model.ApellidoMaterno)
+        @Html.TextBoxFor(model => model.ApellidoMaterno, new { @class = "form-control" })
+    </div>
+    <div class="col-4">
+        @Html.LabelFor(model => model.FechaNacimiento)
+        @Html.TextBoxFor(model => model.FechaNacimiento, new { @class = "form-control" })
+    </div>
+</div>
+<h1 class="text-center">Horario</h1>
+<div class="row">
+    <div class="col-4">
+        @Html.LabelFor(model => model.Horario.Turno)
+        @Html.TextBoxFor(model => model.Horario.Turno, new { @class = "form-control" })
+    </div>
+    <div class="col-4">
+        @Html.LabelFor(model => model.Horario.CicloEscolar)
+        @Html.TextBoxFor(model => model.Horario.CicloEscolar, new { @class = "form-control" })
+    </div>
+    <div class="col-4">
+        @Html.LabelFor(model => model.Horario.Grupo.IdGrupo)
+        @Html.TextBoxFor(model => model.Horario.Grupo.IdGrupo, new { @class = "form-control" })
+    </div>
+</div>
+    <button type="submit" class="btn btn-success">Agregar</button>
+}

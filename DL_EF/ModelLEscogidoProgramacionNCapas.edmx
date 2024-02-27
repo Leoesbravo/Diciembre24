@@ -5,6 +5,34 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="LEscogidoProgramacionNCapasFebreroModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Alumno">
+          <Key>
+            <PropertyRef Name="AlumnoId" />
+          </Key>
+          <Property Name="AlumnoId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ApellidoPaterno" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ApellidoMaterno" Type="varchar" MaxLength="50" />
+          <Property Name="FechaNacimiento" Type="date" />
+        </EntityType>
+        <EntityType Name="Grupo">
+          <Key>
+            <PropertyRef Name="IdGrupo" />
+          </Key>
+          <Property Name="IdGrupo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="50" />
+          <Property Name="IdPlantel" Type="int" />
+        </EntityType>
+        <EntityType Name="Horario">
+          <Key>
+            <PropertyRef Name="IdHorario" />
+          </Key>
+          <Property Name="IdHorario" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Turno" Type="varchar" MaxLength="50" />
+          <Property Name="CicloEscolar" Type="varchar" MaxLength="50" />
+          <Property Name="IdGrupo" Type="int" />
+          <Property Name="IdAlumno" Type="int" />
+        </EntityType>
         <EntityType Name="Materia">
           <Key>
             <PropertyRef Name="IdMateria" />
@@ -16,6 +44,13 @@
           <Property Name="IdSemestre" Type="int" />
           <Property Name="IdSemestreJose" Type="int" />
         </EntityType>
+        <EntityType Name="Plantel">
+          <Key>
+            <PropertyRef Name="IdPlantel" />
+          </Key>
+          <Property Name="IdPlantel" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="50" />
+        </EntityType>
         <EntityType Name="Semestre">
           <Key>
             <PropertyRef Name="IdSemestre" />
@@ -23,6 +58,50 @@
           <Property Name="IdSemestre" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Nombre" Type="varchar" MaxLength="20" />
         </EntityType>
+        <EntityType Name="Usuario">
+          <Key>
+            <PropertyRef Name="IdUsuario" />
+          </Key>
+          <Property Name="IdUsuario" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserName" Type="varchar" MaxLength="50" />
+          <Property Name="Password" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK__Grupo__IdPlantel__71D1E811">
+          <End Role="Plantel" Type="Self.Plantel" Multiplicity="0..1" />
+          <End Role="Grupo" Type="Self.Grupo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Plantel">
+              <PropertyRef Name="IdPlantel" />
+            </Principal>
+            <Dependent Role="Grupo">
+              <PropertyRef Name="IdPlantel" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Horario__IdAlumn__7C4F7684">
+          <End Role="Alumno" Type="Self.Alumno" Multiplicity="0..1" />
+          <End Role="Horario" Type="Self.Horario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Alumno">
+              <PropertyRef Name="AlumnoId" />
+            </Principal>
+            <Dependent Role="Horario">
+              <PropertyRef Name="IdAlumno" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Horario__IdGrupo__7B5B524B">
+          <End Role="Grupo" Type="Self.Grupo" Multiplicity="0..1" />
+          <End Role="Horario" Type="Self.Horario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Grupo">
+              <PropertyRef Name="IdGrupo" />
+            </Principal>
+            <Dependent Role="Horario">
+              <PropertyRef Name="IdGrupo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__Materia__IdSemes__5441852A">
           <End Role="Semestre" Type="Self.Semestre" Multiplicity="0..1" />
           <End Role="Materia" Type="Self.Materia" Multiplicity="*" />
@@ -35,6 +114,16 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="AlumnoAdd" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Nombre" Type="varchar" Mode="In" />
+          <Parameter Name="ApellidoMaterno" Type="varchar" Mode="In" />
+          <Parameter Name="ApellidoPaterno" Type="varchar" Mode="In" />
+          <Parameter Name="FechaNacimiento" Type="varchar" Mode="In" />
+          <Parameter Name="Turno" Type="varchar" Mode="In" />
+          <Parameter Name="CicloEscolar" Type="varchar" Mode="In" />
+          <Parameter Name="IdGrupo" Type="int" Mode="In" />
+        </Function>
+        <Function Name="AlumnoGetAll" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="MateriaAdd" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Nombre" Type="varchar" Mode="In" />
           <Parameter Name="Creditos" Type="tinyint" Mode="In" />
@@ -45,9 +134,29 @@
         <Function Name="MateriaGetById" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="IdMateria" Type="int" Mode="In" />
         </Function>
+        <Function Name="UsuarioGetByEmail" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Email" Type="varchar" Mode="In" />
+        </Function>
         <EntityContainer Name="LEscogidoProgramacionNCapasFebreroModelStoreContainer">
+          <EntitySet Name="Alumno" EntityType="Self.Alumno" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Grupo" EntityType="Self.Grupo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Horario" EntityType="Self.Horario" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Materia" EntityType="Self.Materia" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Plantel" EntityType="Self.Plantel" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Semestre" EntityType="Self.Semestre" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Usuario" EntityType="Self.Usuario" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Grupo__IdPlantel__71D1E811" Association="Self.FK__Grupo__IdPlantel__71D1E811">
+            <End Role="Plantel" EntitySet="Plantel" />
+            <End Role="Grupo" EntitySet="Grupo" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Horario__IdAlumn__7C4F7684" Association="Self.FK__Horario__IdAlumn__7C4F7684">
+            <End Role="Alumno" EntitySet="Alumno" />
+            <End Role="Horario" EntitySet="Horario" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Horario__IdGrupo__7B5B524B" Association="Self.FK__Horario__IdGrupo__7B5B524B">
+            <End Role="Grupo" EntitySet="Grupo" />
+            <End Role="Horario" EntitySet="Horario" />
+          </AssociationSet>
           <AssociationSet Name="FK__Materia__IdSemes__5441852A" Association="Self.FK__Materia__IdSemes__5441852A">
             <End Role="Semestre" EntitySet="Semestre" />
             <End Role="Materia" EntitySet="Materia" />
@@ -74,6 +183,36 @@
             <Parameter Name="IdSemestre" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="MateriaGetAll" ReturnType="Collection(LEscogidoProgramacionNCapasFebreroModel.MateriaGetAll_Result)" />
+          <EntitySet Name="Usuarios" EntityType="LEscogidoProgramacionNCapasFebreroModel.Usuario" />
+          <FunctionImport Name="UsuarioGetByEmail" ReturnType="Collection(LEscogidoProgramacionNCapasFebreroModel.UsuarioGetByEmail_Result)">
+          <Parameter Name="Email" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="Alumnoes" EntityType="LEscogidoProgramacionNCapasFebreroModel.Alumno" />
+          <EntitySet Name="Grupoes" EntityType="LEscogidoProgramacionNCapasFebreroModel.Grupo" />
+          <EntitySet Name="Plantels" EntityType="LEscogidoProgramacionNCapasFebreroModel.Plantel" />
+          <AssociationSet Name="FK__Grupo__IdPlantel__71D1E811" Association="LEscogidoProgramacionNCapasFebreroModel.FK__Grupo__IdPlantel__71D1E811">
+            <End Role="Plantel" EntitySet="Plantels" />
+            <End Role="Grupo" EntitySet="Grupoes" />
+          </AssociationSet>
+          <EntitySet Name="Horarios" EntityType="LEscogidoProgramacionNCapasFebreroModel.Horario" />
+          <AssociationSet Name="FK__Horario__IdAlumn__7C4F7684" Association="LEscogidoProgramacionNCapasFebreroModel.FK__Horario__IdAlumn__7C4F7684">
+            <End Role="Alumno" EntitySet="Alumnoes" />
+            <End Role="Horario" EntitySet="Horarios" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Horario__IdGrupo__7B5B524B" Association="LEscogidoProgramacionNCapasFebreroModel.FK__Horario__IdGrupo__7B5B524B">
+            <End Role="Grupo" EntitySet="Grupoes" />
+            <End Role="Horario" EntitySet="Horarios" />
+          </AssociationSet>
+          <FunctionImport Name="AlumnoGetAll" ReturnType="Collection(LEscogidoProgramacionNCapasFebreroModel.AlumnoGetAll_Result)" />
+          <FunctionImport Name="AlumnoAdd">
+            <Parameter Name="Nombre" Mode="In" Type="String" />
+            <Parameter Name="ApellidoMaterno" Mode="In" Type="String" />
+            <Parameter Name="ApellidoPaterno" Mode="In" Type="String" />
+            <Parameter Name="FechaNacimiento" Mode="In" Type="String" />
+            <Parameter Name="Turno" Mode="In" Type="String" />
+            <Parameter Name="CicloEscolar" Mode="In" Type="String" />
+            <Parameter Name="IdGrupo" Mode="In" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="MateriaGetById_Result">
           <Property Type="Int32" Name="IdMateria" Nullable="false" />
@@ -120,6 +259,103 @@
           <Property Type="String" Name="Costo" Nullable="true" MaxLength="1" />
           <Property Type="Int32" Name="IdSemestre" Nullable="true" />
           <Property Type="String" Name="NombreSemestre" Nullable="true" MaxLength="20" />
+        </ComplexType>
+        <EntityType Name="Usuario">
+          <Key>
+            <PropertyRef Name="IdUsuario" />
+          </Key>
+          <Property Name="IdUsuario" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <ComplexType Name="UsuarioGetByEmail_Result">
+          <Property Type="String" Name="UserName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Password" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="IdUsuario" Nullable="false" />
+        </ComplexType>
+        <EntityType Name="Alumno">
+          <Key>
+            <PropertyRef Name="AlumnoId" />
+          </Key>
+          <Property Name="AlumnoId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ApellidoPaterno" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ApellidoMaterno" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="FechaNacimiento" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="Horarios" Relationship="LEscogidoProgramacionNCapasFebreroModel.FK__Horario__IdAlumn__7C4F7684" FromRole="Alumno" ToRole="Horario" />
+        </EntityType>
+        <EntityType Name="Grupo">
+          <Key>
+            <PropertyRef Name="IdGrupo" />
+          </Key>
+          <Property Name="IdGrupo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IdPlantel" Type="Int32" />
+          <NavigationProperty Name="Plantel" Relationship="LEscogidoProgramacionNCapasFebreroModel.FK__Grupo__IdPlantel__71D1E811" FromRole="Grupo" ToRole="Plantel" />
+          <NavigationProperty Name="Horarios" Relationship="LEscogidoProgramacionNCapasFebreroModel.FK__Horario__IdGrupo__7B5B524B" FromRole="Grupo" ToRole="Horario" />
+        </EntityType>
+        <EntityType Name="Plantel">
+          <Key>
+            <PropertyRef Name="IdPlantel" />
+          </Key>
+          <Property Name="IdPlantel" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Grupoes" Relationship="LEscogidoProgramacionNCapasFebreroModel.FK__Grupo__IdPlantel__71D1E811" FromRole="Plantel" ToRole="Grupo" />
+        </EntityType>
+        <Association Name="FK__Grupo__IdPlantel__71D1E811">
+          <End Type="LEscogidoProgramacionNCapasFebreroModel.Plantel" Role="Plantel" Multiplicity="0..1" />
+          <End Type="LEscogidoProgramacionNCapasFebreroModel.Grupo" Role="Grupo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Plantel">
+              <PropertyRef Name="IdPlantel" />
+            </Principal>
+            <Dependent Role="Grupo">
+              <PropertyRef Name="IdPlantel" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Horario">
+          <Key>
+            <PropertyRef Name="IdHorario" />
+          </Key>
+          <Property Name="IdHorario" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Turno" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CicloEscolar" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IdGrupo" Type="Int32" />
+          <Property Name="IdAlumno" Type="Int32" />
+          <NavigationProperty Name="Alumno" Relationship="LEscogidoProgramacionNCapasFebreroModel.FK__Horario__IdAlumn__7C4F7684" FromRole="Horario" ToRole="Alumno" />
+          <NavigationProperty Name="Grupo" Relationship="LEscogidoProgramacionNCapasFebreroModel.FK__Horario__IdGrupo__7B5B524B" FromRole="Horario" ToRole="Grupo" />
+        </EntityType>
+        <Association Name="FK__Horario__IdAlumn__7C4F7684">
+          <End Type="LEscogidoProgramacionNCapasFebreroModel.Alumno" Role="Alumno" Multiplicity="0..1" />
+          <End Type="LEscogidoProgramacionNCapasFebreroModel.Horario" Role="Horario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Alumno">
+              <PropertyRef Name="AlumnoId" />
+            </Principal>
+            <Dependent Role="Horario">
+              <PropertyRef Name="IdAlumno" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Horario__IdGrupo__7B5B524B">
+          <End Type="LEscogidoProgramacionNCapasFebreroModel.Grupo" Role="Grupo" Multiplicity="0..1" />
+          <End Type="LEscogidoProgramacionNCapasFebreroModel.Horario" Role="Horario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Grupo">
+              <PropertyRef Name="IdGrupo" />
+            </Principal>
+            <Dependent Role="Horario">
+              <PropertyRef Name="IdGrupo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <ComplexType Name="AlumnoGetAll_Result">
+          <Property Type="Int32" Name="AlumnoId" Nullable="false" />
+          <Property Type="String" Name="Nombre" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="ApellidoPaterno" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="ApellidoMaterno" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="FechaNacimiento" Nullable="true" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -170,6 +406,75 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <EntitySetMapping Name="Usuarios">
+            <EntityTypeMapping TypeName="LEscogidoProgramacionNCapasFebreroModel.Usuario">
+              <MappingFragment StoreEntitySet="Usuario">
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="UsuarioGetByEmail" FunctionName="LEscogidoProgramacionNCapasFebreroModel.Store.UsuarioGetByEmail">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="LEscogidoProgramacionNCapasFebreroModel.UsuarioGetByEmail_Result">
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="Alumnoes">
+            <EntityTypeMapping TypeName="LEscogidoProgramacionNCapasFebreroModel.Alumno">
+              <MappingFragment StoreEntitySet="Alumno">
+                <ScalarProperty Name="FechaNacimiento" ColumnName="FechaNacimiento" />
+                <ScalarProperty Name="ApellidoMaterno" ColumnName="ApellidoMaterno" />
+                <ScalarProperty Name="ApellidoPaterno" ColumnName="ApellidoPaterno" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="AlumnoId" ColumnName="AlumnoId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Grupoes">
+            <EntityTypeMapping TypeName="LEscogidoProgramacionNCapasFebreroModel.Grupo">
+              <MappingFragment StoreEntitySet="Grupo">
+                <ScalarProperty Name="IdPlantel" ColumnName="IdPlantel" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="IdGrupo" ColumnName="IdGrupo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Plantels">
+            <EntityTypeMapping TypeName="LEscogidoProgramacionNCapasFebreroModel.Plantel">
+              <MappingFragment StoreEntitySet="Plantel">
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="IdPlantel" ColumnName="IdPlantel" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Horarios">
+            <EntityTypeMapping TypeName="LEscogidoProgramacionNCapasFebreroModel.Horario">
+              <MappingFragment StoreEntitySet="Horario">
+                <ScalarProperty Name="IdAlumno" ColumnName="IdAlumno" />
+                <ScalarProperty Name="IdGrupo" ColumnName="IdGrupo" />
+                <ScalarProperty Name="CicloEscolar" ColumnName="CicloEscolar" />
+                <ScalarProperty Name="Turno" ColumnName="Turno" />
+                <ScalarProperty Name="IdHorario" ColumnName="IdHorario" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="AlumnoGetAll" FunctionName="LEscogidoProgramacionNCapasFebreroModel.Store.AlumnoGetAll">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="LEscogidoProgramacionNCapasFebreroModel.AlumnoGetAll_Result">
+                <ScalarProperty Name="AlumnoId" ColumnName="AlumnoId" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="ApellidoPaterno" ColumnName="ApellidoPaterno" />
+                <ScalarProperty Name="ApellidoMaterno" ColumnName="ApellidoMaterno" />
+                <ScalarProperty Name="FechaNacimiento" ColumnName="FechaNacimiento" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="AlumnoAdd" FunctionName="LEscogidoProgramacionNCapasFebreroModel.Store.AlumnoAdd" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

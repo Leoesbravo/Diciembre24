@@ -50,6 +50,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Alumno.cs">
+      <DependentUpon>ModelLEscogidoProgramacionNCapas.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AlumnoGetAll_Result.cs">
+      <DependentUpon>ModelLEscogidoProgramacionNCapas.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Grupo.cs">
+      <DependentUpon>ModelLEscogidoProgramacionNCapas.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Horario.cs">
+      <DependentUpon>ModelLEscogidoProgramacionNCapas.tt</DependentUpon>
+    </Compile>
     <Compile Include="Materia.cs">
       <DependentUpon>ModelLEscogidoProgramacionNCapas.tt</DependentUpon>
     </Compile>
@@ -74,8 +86,17 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ModelLEscogidoProgramacionNCapas.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Plantel.cs">
+      <DependentUpon>ModelLEscogidoProgramacionNCapas.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Semestre.cs">
+      <DependentUpon>ModelLEscogidoProgramacionNCapas.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Usuario.cs">
+      <DependentUpon>ModelLEscogidoProgramacionNCapas.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UsuarioGetByEmail_Result.cs">
       <DependentUpon>ModelLEscogidoProgramacionNCapas.tt</DependentUpon>
     </Compile>
   </ItemGroup>

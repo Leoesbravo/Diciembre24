@@ -1,0 +1,42 @@
+﻿@model ML.Alumno
+@{
+    ViewBag.Title = "GetAll";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="text-center">Alumnos</h1>
+<hr />
+<a class="btn btn-success" href="@Url.Action("Form","Alumno")">Agregar</a>
+@if (Model.Alumnos.Count > 0 || Model.Alumnos != null)
+{
+    <table class="table table-dark table-hover table-bordered">
+        <thead class="table-secondary">
+            <tr class="text-center">
+                <th>Editar</th>
+                <th>Nombre</th>
+                <th>Fecha de Nacimiento</th>
+                <th>Eliminar</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (ML.Alumno materia in Model.Alumnos)
+            {
+                <tr class="text-center">
+                    <td><a class="btn btn-warning" href="@Url.Action("Form", "Materia", new {idAlumno = materia.IdAlumno})"><i class="bi bi-pencil-square"></i></a></td>
+                    <td>@materia.Nombre<br />@materia.ApellidoPaterno
+                    <td>@materia.FechaNacimiento</td>
+                    <td><button class="btn btn-danger" onclick="return confirm('¿Seguro que desea eleiminar el registro?');"><i class="bi bi-trash"></i></button></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <h1>No existen registros </h1>
+}
+
+
+
+
+

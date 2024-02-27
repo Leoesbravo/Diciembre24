@@ -4,10 +4,18 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="cc30595530614cf48e9f6740a14ff9c8" Name="Diagram1">
-        <EntityTypeShape EntityType="LEscogidoProgramacionNCapasFebreroModel.Materia" Width="1.5" PointX="3" PointY="0.875" />
-        <EntityTypeShape EntityType="LEscogidoProgramacionNCapasFebreroModel.Semestre" Width="1.5" PointX="0.75" PointY="1.25" />
+      <Diagram DiagramId="cc30595530614cf48e9f6740a14ff9c8" Name="Diagram1" ZoomLevel="73">
+        <EntityTypeShape EntityType="LEscogidoProgramacionNCapasFebreroModel.Materia" Width="1.5" PointX="10.625" PointY="2.75" />
+        <EntityTypeShape EntityType="LEscogidoProgramacionNCapasFebreroModel.Semestre" Width="1.5" PointX="12.5" PointY="3.125" />
         <AssociationConnector Association="LEscogidoProgramacionNCapasFebreroModel.FK__Materia__IdSemes__5441852A" />
+        <EntityTypeShape EntityType="LEscogidoProgramacionNCapasFebreroModel.Usuario" Width="1.5" PointX="11.25" PointY="0.75" />
+        <EntityTypeShape EntityType="LEscogidoProgramacionNCapasFebreroModel.Alumno" Width="1.5" PointX="1.125" PointY="0.625" />
+        <EntityTypeShape EntityType="LEscogidoProgramacionNCapasFebreroModel.Grupo" Width="1.5" PointX="3.25" PointY="4.25" />
+        <EntityTypeShape EntityType="LEscogidoProgramacionNCapasFebreroModel.Plantel" Width="1.5" PointX="1.125" PointY="4.25" />
+        <AssociationConnector Association="LEscogidoProgramacionNCapasFebreroModel.FK__Grupo__IdPlantel__71D1E811" />
+        <EntityTypeShape EntityType="LEscogidoProgramacionNCapasFebreroModel.Horario" Width="1.5" PointX="6" PointY="1.5" />
+        <AssociationConnector Association="LEscogidoProgramacionNCapasFebreroModel.FK__Horario__IdAlumn__7C4F7684" />
+        <AssociationConnector Association="LEscogidoProgramacionNCapasFebreroModel.FK__Horario__IdGrupo__7B5B524B" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

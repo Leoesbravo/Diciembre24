@@ -32,7 +32,7 @@
                     <td>@materia.Costo</td>
                     <td>@materia.Semestre.IdSemestre</td>
                     <td>@materia.Semestre.Nombre</td>
-                    <td><button class="btn btn-danger">Eliminar</button></td>
+                    <td><button class="btn btn-danger" onclick="return confirm('¿Seguro que desea eleiminar el registro?');">Eliminar</button></td>
                 </tr>
             }
         </tbody>
@@ -42,5 +42,8 @@ else
 {
 <h1>No existen registros </h1>
 }
+
+
+
 
 
