@@ -16,6 +16,6 @@ namespace DL_EF
         public int IdMateria { get; set; }
         public string Nombre { get; set; }
         public Nullable<byte> Creditos { get; set; }
-        public string Semestre { get; set; }
+        public Nullable<int> IdSemestre { get; set; }
     }
 }

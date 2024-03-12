@@ -10,39 +10,58 @@
 {
     @Html.HiddenFor(model => model.IdAlumno)
 <div class="row">
-    <div class="col-4">
+    <div class="col-md-4">
         @Html.LabelFor(model => model.Nombre)
-        @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control" })
+        @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control", @onkeyup= "soloLetras(this,'lblNombre')" })
+        <label id="lblNombre" style="color:red"></label>
     </div>
-    <div class="col-4">
-        @Html.LabelFor(model => model.ApellidoPaterno)
+
+    <div class="col-md-4">
+        @Html.Label("Telefono")
         @Html.TextBoxFor(model => model.ApellidoPaterno, new { @class = "form-control" })
+        <label id="lblTelefono" style="color:red"></label>
     </div>
 </div>
 <div class="row">
-    <div class="col-4">
+    <div class="col-md-4">
         @Html.LabelFor(model => model.ApellidoMaterno)
         @Html.TextBoxFor(model => model.ApellidoMaterno, new { @class = "form-control" })
     </div>
-    <div class="col-4">
+    <div class="col-md-4">
         @Html.LabelFor(model => model.FechaNacimiento)
         @Html.TextBoxFor(model => model.FechaNacimiento, new { @class = "form-control" })
     </div>
 </div>
 <h1 class="text-center">Horario</h1>
 <div class="row">
-    <div class="col-4">
+    <div class="col-md-4">
         @Html.LabelFor(model => model.Horario.Turno)
         @Html.TextBoxFor(model => model.Horario.Turno, new { @class = "form-control" })
     </div>
-    <div class="col-4">
+    <div class="col-md-4">
         @Html.LabelFor(model => model.Horario.CicloEscolar)
         @Html.TextBoxFor(model => model.Horario.CicloEscolar, new { @class = "form-control" })
     </div>
-    <div class="col-4">
+    <div class="col-md-4">
         @Html.LabelFor(model => model.Horario.Grupo.IdGrupo)
         @Html.TextBoxFor(model => model.Horario.Grupo.IdGrupo, new { @class = "form-control" })
     </div>
 </div>
     <button type="submit" class="btn btn-success">Agregar</button>
 }
+<script>
+    function soloLetras(input, label) {
+        var tecla = $(input).val();
+        var regex = /^[a-zA-Z]+$/;
+        if (regex.test(tecla)) {
+            $('#' + label).text("");
+            $(input).css({ "border-color": "green", "background-color": "green" });
+        }
+        else {
+            $('#' + label).text("Solo se permiten letras");
+            $(input).css({ "border-color": "red", "background-color": "red" });
+        }
+    }
+
+
+</script>

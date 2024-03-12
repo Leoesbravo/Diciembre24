@@ -35,15 +35,6 @@ namespace DL_EF
         public virtual DbSet<Plantel> Plantels { get; set; }
         public virtual DbSet<Horario> Horarios { get; set; }
     
-        public virtual ObjectResult<MateriaGetById_Result> MateriaGetById(Nullable<int> idMateria)
-        {
-            var idMateriaParameter = idMateria.HasValue ?
-                new ObjectParameter("IdMateria", idMateria) :
-                new ObjectParameter("IdMateria", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<MateriaGetById_Result>("MateriaGetById", idMateriaParameter);
-        }
-    
         public virtual int MateriaAdd(string nombre, Nullable<byte> creditos, string costo, Nullable<int> idSemestre)
         {
             var nombreParameter = nombre != null ?
@@ -115,6 +106,15 @@ namespace DL_EF
                 new ObjectParameter("IdGrupo", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("AlumnoAdd", nombreParameter, apellidoMaternoParameter, apellidoPaternoParameter, fechaNacimientoParameter, turnoParameter, cicloEscolarParameter, idGrupoParameter);
+        }
+    
+        public virtual ObjectResult<MateriaGetById_Result> MateriaGetById(Nullable<int> idMateria)
+        {
+            var idMateriaParameter = idMateria.HasValue ?
+                new ObjectParameter("IdMateria", idMateria) :
+                new ObjectParameter("IdMateria", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<MateriaGetById_Result>("MateriaGetById", idMateriaParameter);
         }
     }
 }

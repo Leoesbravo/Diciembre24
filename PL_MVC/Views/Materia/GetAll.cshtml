@@ -19,12 +19,13 @@
                 <th>IdSemestre</th>
                 <th>Semestre</th>
                 <th>Eliminar</th>
+                <th>Comprar</th>
             </tr>
         </thead>
         <tbody>
             @foreach (ML.Materia materia in Model.Materias)
             {
-                <tr class="text-center">    
+                <tr class="text-center">
                     <td><a class="btn btn-warning" href="@Url.Action("Form", "Materia", new {idMateria = materia.IdMateria})">Editar</a></td>
                     <td>@materia.IdMateria</td>
                     <td>@materia.Nombre</td>
@@ -33,6 +34,7 @@
                     <td>@materia.Semestre.IdSemestre</td>
                     <td>@materia.Semestre.Nombre</td>
                     <td><button class="btn btn-danger" onclick="return confirm('¿Seguro que desea eleiminar el registro?');">Eliminar</button></td>
+                    <td><a class="btn btn-outline-success" href="@Url.Action("AddToSession", "VentaAsignacion", new {idpaquete = materia.IdMateria})">Comprar</a></td>
                 </tr>
             }
         </tbody>

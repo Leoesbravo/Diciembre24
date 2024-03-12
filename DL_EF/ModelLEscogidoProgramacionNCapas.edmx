@@ -167,9 +167,6 @@
     <edmx:ConceptualModels>
       <Schema Namespace="LEscogidoProgramacionNCapasFebreroModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="LEscogidoProgramacionNCapasFebreroEntities" annotation:LazyLoadingEnabled="true">
-          <FunctionImport Name="MateriaGetById" ReturnType="Collection(LEscogidoProgramacionNCapasFebreroModel.MateriaGetById_Result)">
-          <Parameter Name="IdMateria" Mode="In" Type="Int32" />
-          </FunctionImport>
           <EntitySet Name="Materias" EntityType="LEscogidoProgramacionNCapasFebreroModel.Materia" />
           <EntitySet Name="Semestres" EntityType="LEscogidoProgramacionNCapasFebreroModel.Semestre" />
           <AssociationSet Name="FK__Materia__IdSemes__5441852A" Association="LEscogidoProgramacionNCapasFebreroModel.FK__Materia__IdSemes__5441852A">
@@ -213,13 +210,10 @@
             <Parameter Name="CicloEscolar" Mode="In" Type="String" />
             <Parameter Name="IdGrupo" Mode="In" Type="Int32" />
           </FunctionImport>
+          <FunctionImport Name="MateriaGetById" ReturnType="Collection(LEscogidoProgramacionNCapasFebreroModel.MateriaGetById_Result)">
+            <Parameter Name="IdMateria" Mode="In" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
-        <ComplexType Name="MateriaGetById_Result">
-          <Property Type="Int32" Name="IdMateria" Nullable="false" />
-          <Property Type="String" Name="Nombre" Nullable="true" MaxLength="50" />
-          <Property Type="Byte" Name="Creditos" Nullable="true" />
-          <Property Type="String" Name="Semestre" Nullable="true" MaxLength="50" />
-        </ComplexType>
         <EntityType Name="Materia">
           <Key>
             <PropertyRef Name="IdMateria" />
@@ -357,22 +351,18 @@
           <Property Type="String" Name="ApellidoMaterno" Nullable="true" MaxLength="50" />
           <Property Type="DateTime" Name="FechaNacimiento" Nullable="true" />
         </ComplexType>
+        <ComplexType Name="MateriaGetById_Result">
+          <Property Type="Int32" Name="IdMateria" Nullable="false" />
+          <Property Type="String" Name="Nombre" Nullable="true" MaxLength="50" />
+          <Property Type="Byte" Name="Creditos" Nullable="true" />
+          <Property Type="Int32" Name="IdSemestre" Nullable="true" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="LEscogidoProgramacionNCapasFebreroModelStoreContainer" CdmEntityContainer="LEscogidoProgramacionNCapasFebreroEntities">
-          <FunctionImportMapping FunctionImportName="MateriaGetById" FunctionName="LEscogidoProgramacionNCapasFebreroModel.Store.MateriaGetById">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="LEscogidoProgramacionNCapasFebreroModel.MateriaGetById_Result">
-                <ScalarProperty Name="IdMateria" ColumnName="IdMateria" />
-                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
-                <ScalarProperty Name="Creditos" ColumnName="Creditos" />
-                <ScalarProperty Name="Semestre" ColumnName="Semestre" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           <EntitySetMapping Name="Materias">
             <EntityTypeMapping TypeName="LEscogidoProgramacionNCapasFebreroModel.Materia">
               <MappingFragment StoreEntitySet="Materia">
@@ -475,6 +465,16 @@
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="AlumnoAdd" FunctionName="LEscogidoProgramacionNCapasFebreroModel.Store.AlumnoAdd" />
+          <FunctionImportMapping FunctionImportName="MateriaGetById" FunctionName="LEscogidoProgramacionNCapasFebreroModel.Store.MateriaGetById">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="LEscogidoProgramacionNCapasFebreroModel.MateriaGetById_Result">
+                <ScalarProperty Name="IdMateria" ColumnName="IdMateria" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Creditos" ColumnName="Creditos" />
+                <ScalarProperty Name="IdSemestre" ColumnName="IdSemestre" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

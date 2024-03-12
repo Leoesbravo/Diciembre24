@@ -203,7 +203,7 @@ namespace BL
                             ML.Materia materiaObj = new ML.Materia();
                             materiaObj.IdMateria = registro.IdMateria;
                             materiaObj.Nombre = registro.Nombre;
-                            materiaObj.Creditos = registro.Creditos.Value;                           
+                            materiaObj.Creditos = registro.Creditos.Value;
                             materiaObj.Semestre = new ML.Semestre();
                             materiaObj.Semestre.Nombre = registro.NombreSemestre;
                             materiaObj.Semestre.IdSemestre = registro.IdSemestre.Value;
@@ -233,15 +233,16 @@ namespace BL
                 {
                     var registros = context.MateriaGetById(idMateria).SingleOrDefault();
 
-                    if (registros!=null)
+                    if (registros != null)
                     {
-                            ML.Materia materiaObj = new ML.Materia();
-                            materiaObj.IdMateria = registros.IdMateria;
-                            materiaObj.Nombre = registros.Nombre;
-                            materiaObj.Creditos = registros.Creditos.Value;
+                        ML.Materia materiaObj = new ML.Materia();
+                        materiaObj.IdMateria = registros.IdMateria;
+                        materiaObj.Nombre = registros.Nombre;
+                        materiaObj.Creditos = registros.Creditos.Value;
                         materiaObj.Semestre = new ML.Semestre();
+                        materiaObj.Semestre.IdSemestre = registros.IdSemestre.Value;
 
-                        
+
                         //return (true, null, materia, null);
                         return (true, null, materiaObj, null);
                     }
@@ -305,7 +306,7 @@ namespace BL
             {
                 using (DL_EF.LEscogidoProgramacionNCapasFebreroEntities context = new DL_EF.LEscogidoProgramacionNCapasFebreroEntities())
                 {
-                   //instancia de un objeto, creando un objeto
+                    //instancia de un objeto, creando un objeto
                     DL_EF.Materia materiaDL = new DL_EF.Materia();
 
                     materiaDL.Nombre = materia.Nombre;
@@ -313,7 +314,7 @@ namespace BL
 
                     context.Materias.Add(materiaDL);
                     int rowsAffected = context.SaveChanges();
-                    if(rowsAffected > 0)
+                    if (rowsAffected > 0)
                     {
                         return (true, null, null);
                     }
