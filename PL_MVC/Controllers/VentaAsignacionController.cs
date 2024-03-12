@@ -64,5 +64,11 @@ namespace PL_MVC.Controllers
             }
             return RedirectToAction("GetAll", "Materia");
         }
+
+        public ActionResult Asignar()
+        {
+            //limpiar la session
+            return PartialView("Modal");
+        }
     }
 }
